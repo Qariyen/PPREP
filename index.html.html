@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pilot Prep 2026 — OSM Cadet Tracker Elite</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg0: #02050b;
+    --bg1: #050b14;
+    --bg2: #081220;
+    --bg3: #0b1729;
+    --bg4: #10213a;
+    --panel: rgba(8,18,32,0.88);
+    --panel2: rgba(11,23,41,0.92);
+    --accent: #2e9cff;
+    --accent2: #13d6a5;
+    --gold: #f7b53b;
+    --gold2: #df9a25;
+    --red: #f05b5b;
+    --violet: #7c67ff;
+    --text: #e7f2ff;
+    --text2: #99b6d5;
+    --text3: #5a7c9c;
+    --border: rgba(46,156,255,0.18);
+    --border2: rgba(46,156,255,0.34);
+    --shadow: 0 18px 40px rgba(0,0,0,0.38);
+    --font-display: 'Orbitron', monospace;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background:
+      radial-gradient(circle at top left, rgba(46,156,255,0.08), transparent 28%),
+      radial-gradient(circle at top right, rgba(19,214,165,0.05), transparent 24%),
+      linear-gradient(180deg, var(--bg1), var(--bg0));
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 8% 16%, rgba(255,255,255,0.45) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 68%, rgba(255,255,255,0.28) 0%, transparent 100%),
+      radial-gradient(1px 1px at 53% 10%, rgba(255,255,255,0.35) 0%, transparent 100%),
+      radial-gradient(1px 1px at 72% 46%, rgba(255,255,255,0.18) 0%, transparent 100%),
+      radial-gradient(1px 1px at 86% 20%, rgba(255,255,255,0.38) 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 84%, rgba(255,255,255,0.24) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 88%, rgba(255,255,255,0.18) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hud-header {
+    position: sticky;
+    top: 0;
+    z-index: 300;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 2rem;
+    background: rgba(2,5,11,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border2);
+  }
+
+  .logo { display:flex; align-items:center; gap:12px; }
+  .logo-icon {
+    width: 40px; height: 40px;
+    border-radius: 11px;
+    display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    font-size: 19px;
+    box-shadow: var(--shadow);
+    flex-shrink: 0;
+  }
+  .logo-text {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+  .logo-sub {
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+
+  .hud-nav { display:flex; gap:4px; margin-left:auto; }
+  .nav-tab {
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text2);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    letter-spacing: .4px;
+    transition: all .2s ease;
+  }
+  .nav-tab:hover { background: rgba(46,156,255,0.08); color: var(--text); }
+  .nav-tab.active {
+    color: var(--accent);
+    border-color: var(--border2);
+    background: rgba(46,156,255,0.08);
+  }
+
+  .hud-pills { display:flex; gap:8px; margin-left: 1rem; }
+  .pill {
+    display:flex; align-items:center; gap:5px;
+    white-space: nowrap;
+    border: 1px solid var(--border);
+    background: rgba(46,156,255,0.08);
+    padding: 4px 13px;
+    border-radius: 999px;
+    font-size: 11px;
+    color: var(--text2);
+  }
+  .pill b { color: var(--accent); }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 2rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-grid {
+    display:grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .gauge-card {
+    position:relative;
+    overflow:hidden;
+    background: linear-gradient(180deg, rgba(11,23,41,0.92), rgba(8,18,32,0.92));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.1rem;
+    text-align:center;
+    box-shadow: var(--shadow);
+    transition: transform .2s ease, border-color .2s ease;
+  }
+  .gauge-card::before {
+    content:'';
+    position:absolute;
+    left:0; right:0; top:0;
+    height:2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: .75;
+  }
+  .gauge-card:hover { transform: translateY(-2px); border-color: var(--border2); }
+
+  .gauge-val {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1;
+    font-weight: 900;
+    color: var(--accent);
+    margin-bottom: 7px;
+  }
+  .gauge-val.gold { color: var(--gold); }
+  .gauge-val.green { color: var(--accent2); }
+  .gauge-val.red { color: var(--red); }
+  .gauge-val.violet { color: var(--violet); }
+
+  .gauge-label {
+    font-size: 9px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+  }
+
+  .runway-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    box-shadow: var(--shadow);
+  }
+  .runway-head {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom: 10px;
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .runway-track {
+    height: 9px;
+    background: rgba(46,156,255,0.10);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .runway-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent), var(--gold));
+    position: relative;
+    transition: width .6s cubic-bezier(.4,0,.2,1);
+  }
+  .runway-fill::after {
+    content: '✈';
+    position:absolute;
+    right:-2px;
+    top:50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    filter: drop-shadow(0 0 8px var(--accent));
+  }
+  .runway-pips {
+    display:flex;
+    justify-content:space-between;
+    margin-top: 7px;
+  }
+  .runway-pip {
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 1px;
+  }
+
+  .main-wrap {
+    position: relative;
+    z-index: 1;
+    display:grid;
+    grid-template-columns: 1fr 390px;
+    min-height: calc(100vh - 70px - 180px);
+  }
+
+  .plan-col {
+    padding: 1.5rem 2rem;
+    border-right: 1px solid var(--border);
+  }
+
+  .phase-tabs {
+    display:flex;
+    gap:8px;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+  .phase-tab {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .phase-tab:hover { color: var(--text); background: rgba(46,156,255,0.08); }
+  .phase-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    font-weight: 600;
+  }
+
+  .phase-block {
+    background: linear-gradient(180deg, rgba(11,23,41,0.85), rgba(8,18,32,0.86));
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    transition: border-color .2s ease;
+  }
+  .phase-block:hover { border-color: var(--border2); }
+
+  .phase-header {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding: 1rem 1.25rem;
+    background: rgba(46,156,255,0.05);
+    cursor:pointer;
+    transition: background .2s ease;
+    user-select:none;
+    border-bottom: 1px solid transparent;
+  }
+  .phase-block.open .phase-header {
+    border-bottom-color: var(--border);
+    background: rgba(46,156,255,0.08);
+  }
+  .phase-header:hover { background: rgba(46,156,255,0.10); }
+
+  .phase-badge {
+    min-width: 48px;
+    text-align:center;
+    padding: 3px 8px;
+    border-radius: 7px;
+    border: 1px solid var(--border2);
+    background: rgba(46,156,255,0.14);
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+  }
+  .phase-title-text { font-size: 14px; font-weight: 600; color: var(--text); }
+  .phase-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+  .phase-prog-wrap {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-left:auto;
+    margin-right:10px;
+  }
+  .phase-prog-bar {
+    width: 64px;
+    height: 5px;
+    background: rgba(46,156,255,0.15);
+    border-radius: 999px;
+    overflow:hidden;
+  }
+  .phase-prog-fill {
+    height: 100%;
+    background: var(--accent2);
+    border-radius: 999px;
+  }
+  .phase-prog-text {
+    font-size: 11px;
+    color: var(--text3);
+    white-space: nowrap;
+  }
+  .chevron {
+    color: var(--text3);
+    font-size: 10px;
+    transition: transform .25s ease;
+  }
+  .phase-block.open .chevron { transform: rotate(180deg); }
+
+  .weeks-list { display:none; }
+  .phase-block.open .weeks-list { display:block; }
+
+  .week-row {
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding: .9rem 1.25rem;
+    border-bottom: 1px solid rgba(46,156,255,0.08);
+    cursor:pointer;
+    transition: background .15s ease;
+  }
+  .week-row:last-child { border-bottom:none; }
+  .week-row:hover { background: rgba(46,156,255,0.05); }
+  .week-row.expanded { background: rgba(46,156,255,0.06); }
+
+  .check-btn {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 2px solid rgba(46,156,255,0.35);
+    background: transparent;
+    color: transparent;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    margin-top: 1px;
+    cursor:pointer;
+    transition: all .2s ease;
+    font-size: 13px;
+  }
+  .check-btn:hover { border-color: var(--accent2); }
+  .check-btn.done {
+    color: white;
+    background: var(--accent2);
+    border-color: var(--accent2);
+  }
+
+  .week-num-badge {
+    min-width: 42px;
+    font-family: var(--font-display);
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--text3);
+    margin-top: 5px;
+  }
+  .week-body { flex:1; min-width: 0; }
+  .week-title { font-size: 14px; font-weight: 500; color: var(--text); }
+  .week-title.done { text-decoration: line-through; opacity: .55; }
+  .week-dates { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .week-meta {
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    margin-top: 8px;
+  }
+  .meta-chip {
+    border: 1px solid rgba(46,156,255,0.16);
+    background: rgba(46,156,255,0.08);
+    color: var(--text2);
+    border-radius: 999px;
+    padding: 3px 8px;
+    font-size: 10px;
+    letter-spacing: .4px;
+  }
+
+  .week-expand {
+    margin-top: 10px;
+    border-radius: 10px;
+    background: rgba(2,5,11,0.34);
+    padding: 10px 12px;
+  }
+  .topic-list {
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom: 10px;
+  }
+  .topic-chip {
+    padding: 4px 10px;
+    border-radius: 7px;
+    border: 1px solid rgba(46,156,255,0.18);
+    background: rgba(46,156,255,0.08);
+    color: var(--text2);
+    font-size: 12px;
+  }
+  .motivation-strip {
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 12px;
+    background: rgba(247,181,59,0.08);
+    color: var(--gold);
+    font-size: 12px;
+    font-style: italic;
+  }
+  .expand-arrow {
+    color: var(--text3);
+    font-size: 11px;
+    margin-top: 5px;
+    transition: transform .2s ease;
+  }
+  .week-row.expanded .expand-arrow { transform: rotate(180deg); }
+
+  .sidebar {
+    padding: 1.5rem 1.25rem;
+    display:flex;
+    flex-direction:column;
+    gap: 1rem;
+  }
+
+  .sidebar-card {
+    background: linear-gradient(180deg, rgba(11,23,41,0.90), rgba(8,18,32,0.90));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow:hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .sidebar-card-head {
+    padding: .85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(46,156,255,0.05);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+  }
+
+  .brief-content, .xp-body, .mission-body, .streak-body, .subject-body, .aptitude-body, .achievement-body, .timer-body, .comms-body, .log-body, .resources-body {
+    padding: 1rem;
+  }
+
+  .brief-date, .mini-label {
+    font-family: var(--font-display);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: .5rem;
+  }
+  .brief-phase-name, .mission-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .brief-desc, .mission-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  .brief-cta, .mission-actions, .timer-actions, .quiz-actions {
+    display:flex;
+    gap:8px;
+    margin-top: 12px;
+  }
+
+  .btn-primary, .btn-ghost, .btn-danger, .btn-green {
+    border-radius: 9px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-family: var(--font-body);
+    cursor:pointer;
+    transition: opacity .2s ease, background .2s ease, border-color .2s ease;
+  }
+
+  .btn-primary {
+    flex:1;
+    border:none;
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+  }
+  .btn-primary:hover { opacity: .88; }
+
+  .btn-ghost {
+    flex:1;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+  }
+  .btn-ghost:hover { background: rgba(46,156,255,0.09); color: var(--text); }
+
+  .btn-danger {
+    background: rgba(240,91,91,0.12);
+    border: 1px solid rgba(240,91,91,0.24);
+    color: #ffaaaa;
+  }
+  .btn-danger:hover { background: rgba(240,91,91,0.18); }
+
+  .btn-green {
+    background: rgba(19,214,165,0.12);
+    border: 1px solid rgba(19,214,165,0.26);
+    color: var(--accent2);
+  }
+  .btn-green:hover { background: rgba(19,214,165,0.18); }
+
+  .streak-num, .timer-display, .xp-level, .quiz-value {
+    font-family: var(--font-display);
+    line-height: 1;
+  }
+
+  .streak-num {
+    font-size: 36px;
+    color: var(--gold);
+    font-weight: 900;
+  }
+  .streak-label, .xp-sub {
+    margin-top: 3px;
+    color: var(--text3);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .streak-dots {
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-top: 12px;
+  }
+  .streak-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(46,156,255,0.15);
+    border: 1px solid var(--border);
+  }
+  .streak-dot.done {
+    background: var(--gold);
+    border-color: var(--gold2);
+  }
+
+  .xp-level {
+    font-size: 34px;
+    font-weight: 900;
+    color: var(--violet);
+  }
+  .xp-row {
+    display:flex;
+    justify-content:space-between;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .xp-points {
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .xp-bar {
+    height: 10px;
+    border-radius: 999px;
+    overflow:hidden;
+    background: rgba(124,103,255,0.10);
+    border: 1px solid rgba(124,103,255,0.18);
+  }
+  .xp-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--violet), var(--accent));
+    transition: width .35s ease;
+  }
+
+  .mission-tag-row {
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top: 10px;
+  }
+  .mission-tag {
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(247,181,59,0.08);
+    border: 1px solid rgba(247,181,59,0.18);
+    color: var(--gold);
+    font-size: 10px;
+  }
+
+  .subject-row { margin-bottom: 12px; }
+  .subject-top {
+    display:flex;
+    justify-content:space-between;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 5px;
+  }
+  .subject-bar {
+    height: 8px;
+    border-radius: 999px;
+    overflow:hidden;
+    background: rgba(46,156,255,0.12);
+  }
+  .subject-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    transition: width .35s ease;
+  }
+
+  .quiz-value {
+    font-size: 28px;
+    color: var(--gold);
+    text-align:center;
+    padding: 10px 0 6px;
+  }
+  .quiz-prompt {
+    color: var(--text2);
+    font-size: 13px;
+    text-align:center;
+  }
+  .quiz-answer {
+    margin-top: 10px;
+    min-height: 40px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(2,5,11,0.35);
+    border: 1px solid var(--border);
+    color: var(--accent2);
+    font-size: 13px;
+    text-align:center;
+  }
+
+  .achievement-list {
+    display:flex;
+    flex-direction:column;
+    gap: 8px;
+  }
+  .achievement-item {
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding: 9px 10px;
+    border-radius: 11px;
+    border: 1px solid var(--border);
+    background: rgba(2,5,11,0.32);
+  }
+  .achievement-item.unlocked {
+    background: rgba(247,181,59,0.06);
+    border-color: rgba(247,181,59,0.20);
+  }
+  .achievement-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display:flex; align-items:center; justify-content:center;
+    background: rgba(46,156,255,0.10);
+    border: 1px solid var(--border);
+    flex-shrink:0;
+  }
+  .achievement-item.unlocked .achievement-icon {
+    background: rgba(247,181,59,0.12);
+    border-color: rgba(247,181,59,0.22);
+  }
+  .achievement-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .achievement-desc {
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.5;
+  }
+
+  .timer-display {
+    font-size: 34px;
+    font-weight: 900;
+    color: var(--accent2);
+    margin-bottom: 4px;
+  }
+
+  .comms-phrase {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: rgba(2,5,11,0.35);
+    color: var(--accent2);
+    font-family: var(--font-display);
+    font-size: 11px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .comms-meaning {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+  .comms-refresh {
+    width: 100%;
+    padding: 7px;
+    border-radius: 8px;
+    border: 1px solid rgba(19,214,165,0.28);
+    background: rgba(19,214,165,0.10);
+    color: var(--accent2);
+    cursor:pointer;
+  }
+  .comms-refresh:hover { background: rgba(19,214,165,0.18); }
+
+  .log-input-row {
+    display:flex;
+    gap:8px;
+    margin-bottom: 10px;
+  }
+  .log-input {
+    flex:1;
+    border-radius: 8px;
+    border: 1px solid var(--border2);
+    background: rgba(2,5,11,0.35);
+    color: var(--text);
+    padding: 8px 12px;
+    outline: none;
+  }
+  .log-input:focus { border-color: var(--accent); }
+  .log-add-btn {
+    border:none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    background: var(--accent);
+    color: white;
+    cursor:pointer;
+  }
+  .log-entry {
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(46,156,255,0.08);
+  }
+  .log-entry:last-child { border-bottom:none; }
+  .log-entry-time {
+    min-width: 92px;
+    color: var(--text3);
+    font-size: 10px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .log-del {
+    margin-left:auto;
+    color: var(--text3);
+    opacity: 0;
+    cursor:pointer;
+    transition: opacity .2s ease;
+  }
+  .log-entry:hover .log-del { opacity: 1; }
+
+  .resource-item {
+    display:flex;
+    gap:10px;
+    align-items:center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(46,156,255,0.08);
+    cursor:pointer;
+  }
+  .resource-item:last-child { border-bottom:none; }
+  .resource-item:hover .resource-name { color: var(--accent); }
+  .resource-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink:0;
+  }
+  .resource-name { flex:1; color: var(--text2); font-size: 13px; }
+  .resource-cat { font-size: 10px; color: var(--text3); letter-spacing: 1px; }
+
+  .section-shell {
+    display:none;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    margin-bottom: 1.25rem;
+  }
+
+  .alpha-grid {
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4px;
+    max-width: 620px;
+  }
+  .alpha-cell {
+    display:flex;
+    gap:6px;
+    align-items:center;
+    padding: 5px 8px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: rgba(2,5,11,0.30);
+  }
+  .alpha-letter {
+    min-width: 14px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .alpha-word { font-size: 10px; color: var(--text3); }
+
+  .resource-library-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    max-width: 1100px;
+  }
+  .resource-card {
+    padding: 1rem;
+    border-radius: 15px;
+    border: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(11,23,41,0.86), rgba(8,18,32,0.88));
+    box-shadow: var(--shadow);
+    transition: transform .2s ease, border-color .2s ease;
+  }
+  .resource-card:hover { transform: translateY(-2px); border-color: var(--border2); }
+  .resource-card-top {
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:flex-start;
+    margin-bottom: 10px;
+  }
+  .resource-card h3 {
+    font-size: 15px;
+    line-height: 1.35;
+    color: var(--text);
+  }
+  .resource-card p {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+  .resource-card-meta {
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 1220px) {
+    .hero-grid { grid-template-columns: repeat(3, 1fr); }
+    .main-wrap { grid-template-columns: 1fr; }
+    .sidebar { border-top: 1px solid var(--border); }
+  }
+
+  @media (max-width: 900px) {
+    .hud-nav, .hud-pills { display:none; }
+  }
+
+  @media (max-width: 700px) {
+    .hero-grid { grid-template-columns: repeat(2, 1fr); }
+    .hud-header { padding: 0 1rem; }
+    .plan-col, .sidebar, .section-shell { padding: 1rem; }
+  }
+
+  @media (max-width: 500px) {
+    .alpha-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  .phase-block, .sidebar-card, .resource-card { animation: fadeIn .28s ease both; }
+</style>
+</head>
+<body>
+
+<header class="hud-header">
+  <div class="logo">
+    <div class="logo-icon">✈</div>
+    <div>
+      <div class="logo-text">PILOT PREP 2026 · AQ7</div>
+      <div class="logo-sub">OSM CADET TRACKER · APR – JUL</div>
+    </div>
+  </div>
+
+  <nav class="hud-nav">
+    <button class="nav-tab active" onclick="showSection('plan')">Flight Plan</button>
+    <button class="nav-tab" onclick="showSection('icao')">ICAO</button>
+    <button class="nav-tab" onclick="showSection('resources')">Resources</button>
+  </nav>
+
+  <div class="hud-pills">
+    <div class="pill">Done: <b id="hdr-done">0</b>&nbsp;/&nbsp;<b id="hdr-total">17</b></div>
+    <div class="pill">Progress: <b id="hdr-pct">0%</b></div>
+    <div class="pill">Level: <b id="hdr-level">1</b></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div class="gauge-card">
+      <div class="gauge-val green" id="g-done">0</div>
+      <div class="gauge-label">Weeks complete</div>
+    </div>
+    <div class="gauge-card">
+      <div class="gauge-val" id="g-pct">0%</div>
+      <div class="gauge-label">Mission progress</div>
+    </div>
+    <div class="gauge-card">
+      <div class="gauge-val red" id="g-left">17</div>
+      <div class="gauge-label">Weeks remaining</div>
+    </div>
+    <div class="gauge-card">
+      <div class="gauge-val gold" id="g-streak">0</div>
+      <div class="gauge-label">Week streak</div>
+    </div>
+    <div class="gauge-card">
+      <div class="gauge-val violet" id="g-level">1</div>
+      <div class="gauge-label">Cadet level</div>
+    </div>
+    <div class="gauge-card">
+      <div class="gauge-val" id="g-xp">0</div>
+      <div class="gauge-label">Total XP</div>
+    </div>
+  </div>
+
+  <div class="runway-wrap">
+    <div class="runway-head">
+      <span>▶ DEPARTURE</span>
+      <span id="runway-label-center">— APR TO JULY MISSION TRACK —</span>
+      <span>OSM ENTRY ▶</span>
+    </div>
+    <div class="runway-track">
+      <div class="runway-fill" id="runway-fill"></div>
+    </div>
+    <div class="runway-pips">
+      <span class="runway-pip">APR</span>
+      <span class="runway-pip">MAY</span>
+      <span class="runway-pip">JUN</span>
+      <span class="runway-pip">JUL</span>
+      <span class="runway-pip">FINAL</span>
+    </div>
+  </div>
+</section>
+
+<div class="main-wrap" id="section-plan">
+  <main class="plan-col">
+    <div class="phase-tabs" id="phase-tabs"></div>
+    <div id="plan-grid"></div>
+  </main>
+
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">📡 Today's Mission Brief</div>
+      <div class="brief-content">
+        <div class="brief-date" id="brief-date"></div>
+        <div class="brief-phase-name" id="brief-phase">Loading...</div>
+        <div class="brief-desc" id="brief-desc"></div>
+        <div class="brief-cta">
+          <button class="btn-primary" onclick="markCurrentDone()">Mark current week done ✓</button>
+          <button class="btn-ghost" onclick="openCurrentWeek()">View details ↓</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">🛡️ Cadet XP & Level</div>
+      <div class="xp-body">
+        <div class="xp-row">
+          <div>
+            <div class="xp-level" id="xp-level">LVL 1</div>
+            <div class="xp-sub">Balanced progression</div>
+          </div>
+          <div class="xp-points"><span id="xp-points">0</span> XP</div>
+        </div>
+        <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:8px;">Next level at <span id="xp-next">220</span> XP</div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">🎯 Pilot-Specific Daily Mission</div>
+      <div class="mission-body">
+        <div class="mini-label" id="mission-date"></div>
+        <div class="mission-title" id="mission-title">Loading mission...</div>
+        <div class="mission-desc" id="mission-desc"></div>
+        <div class="mission-tag-row" id="mission-tags"></div>
+        <div class="mission-actions">
+          <button class="btn-green" onclick="completeMission()">Complete mission +20 XP</button>
+          <button class="btn-ghost" onclick="nextMission()">Swap mission</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">🔥 Weekly Streak</div>
+      <div class="streak-body">
+        <div class="streak-num" id="streak-display">0</div>
+        <div class="streak-label">consecutive weeks</div>
+        <div class="streak-dots" id="streak-dots"></div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">📊 Subject Breakdown</div>
+      <div class="subject-body" id="subject-breakdown"></div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">🧠 OSM Aptitude Drill</div>
+      <div class="aptitude-body">
+        <div class="mini-label">Quick mental task</div>
+        <div class="quiz-value" id="aptitude-value">Loading...</div>
+        <div class="quiz-prompt" id="aptitude-prompt"></div>
+        <div class="quiz-answer" id="aptitude-answer">Think first. Reveal when ready.</div>
+        <div class="quiz-actions">
+          <button class="btn-primary" onclick="revealAptitude()">Reveal</button>
+          <button class="btn-ghost" onclick="nextAptitude()">New drill</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">🏅 Achievements</div>
+      <div class="achievement-body">
+        <div class="achievement-list" id="achievement-list"></div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">⏱️ Focus Timer</div>
+      <div class="timer-body">
+        <div class="timer-display" id="timer-display">20:00</div>
+        <div class="xp-sub">Short premium focus sessions</div>
+        <div class="timer-actions">
+          <button class="btn-green" onclick="startTimer()">Start</button>
+          <button class="btn-ghost" onclick="pauseTimer()">Pause</button>
+          <button class="btn-danger" onclick="resetTimer()">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">📻 ATC Phrase of the Day</div>
+      <div class="comms-body">
+        <div class="comms-phrase" id="atc-phrase">Loading…</div>
+        <div class="comms-meaning" id="atc-meaning"></div>
+        <button class="comms-refresh" onclick="nextPhrase()">↻ New phrase</button>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">📒 Flight Study Log</div>
+      <div class="log-body">
+        <div class="log-input-row">
+          <input class="log-input" id="log-input" type="text" placeholder="Log today's study..." onkeydown="if(event.key==='Enter')addLog()">
+          <button class="log-add-btn" onclick="addLog()">+</button>
+        </div>
+        <div id="log-entries"></div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-head">🔗 Quick Resources</div>
+      <div class="resources-body">
+        <div class="resource-item" onclick="openLink('https://www.khanacademy.org/math')">
+          <div class="resource-dot" style="background:#2e9cff"></div>
+          <span class="resource-name">Khan Academy — Math & Physics</span>
+          <span class="resource-cat">FREE</span>
+        </div>
+        <div class="resource-item" onclick="openLink('https://www.pilotest.com')">
+          <div class="resource-dot" style="background:#f7b53b"></div>
+          <span class="resource-name">Pilotest.com — Aptitude</span>
+          <span class="resource-cat">FREE</span>
+        </div>
+        <div class="resource-item" onclick="openLink('https://www.liveatc.net')">
+          <div class="resource-dot" style="background:#13d6a5"></div>
+          <span class="resource-name">LiveATC — Radio Listening</span>
+          <span class="resource-cat">FREE</span>
+        </div>
+        <div class="resource-item" onclick="openLink('https://skyvector.com')">
+          <div class="resource-dot" style="background:#2e9cff"></div>
+          <span class="resource-name">SkyVector — Route Planning</span>
+          <span class="resource-cat">FREE</span>
+        </div>
+        <div class="resource-item" onclick="openLink('https://www.youtube.com/@flywithcaptainjoe')">
+          <div class="resource-dot" style="background:#f05b5b"></div>
+          <span class="resource-name">Captain Joe — Systems & Theory</span>
+          <span class="resource-cat">FREE</span>
+        </div>
+        <div class="resource-item" onclick="openLink('https://www.youtube.com/@MentourPilot')">
+          <div class="resource-dot" style="background:#f05b5b"></div>
+          <span class="resource-name">Mentour Pilot — Ops & CRM</span>
+          <span class="resource-cat">FREE</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-danger" style="width:100%;" onclick="resetProgress()">Reset all progression</button>
+  </aside>
+</div>
+
+<div id="section-icao" class="section-shell">
+  <h2 class="section-title">ICAO PHONETIC ALPHABET</h2>
+  <div class="alpha-grid" id="icao-grid"></div>
+  <div style="margin-top:1.5rem;padding:1rem;background:var(--panel2);border:1px solid var(--border);border-radius:14px;max-width:620px;">
+    <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Say it — test yourself</div>
+    <div id="icao-quiz" style="font-family:var(--font-display);font-size:32px;color:var(--gold);text-align:center;padding:1.5rem;"></div>
+    <div id="icao-answer" style="text-align:center;font-size:14px;color:var(--text2);margin-top:0.5rem;min-height:22px;"></div>
+    <div class="quiz-actions">
+      <button class="btn-primary" onclick="revealIcao()">Reveal</button>
+      <button class="btn-ghost" onclick="nextIcao()">Next letter →</button>
+    </div>
+  </div>
+</div>
+
+<div id="section-resources" class="section-shell">
+  <h2 class="section-title">RESOURCE LIBRARY</h2>
+  <div class="resource-library-grid" id="resource-library"></div>
+</div>
+
+<script>
+const phases = [
+  {
+    month: "April 2026", short: "APR", title: "Foundations & Aptitude",
+    weeks: [
+      { num: 1, title: "Math Basics + Physics", dates: "Apr 7–13", subjects: ["Math","Physics","Aptitude"],
+        topics: ["Fractions, percentages, ratios", "Newton's 3 Laws", "Khan Academy: Arithmetic & Pre-Algebra", "10 min/day logic puzzles", "Mental math warmups"],
+        motivation: "You're building the raw brainpower every pilot uses." },
+      { num: 2, title: "Algebra + Principles of Flight", dates: "Apr 14–20", subjects: ["Math","Flight Theory"],
+        topics: ["Solving for x, equations", "Lift, drag, thrust, weight", "Basic instrument familiarization", "Simple aerodynamic explanations"],
+        motivation: "These equations explain why your aircraft even gets off the ground." },
+      { num: 3, title: "Aircraft Systems (Instruments)", dates: "Apr 21–27", subjects: ["Systems","Flight Theory"],
+        topics: ["Altimeter, ASI, VSI, attitude indicator", "Cockpit scan habit", "6-pack instrument recognition", "Basic system awareness"],
+        motivation: "By now you'll recognize every key instrument faster." },
+      { num: 4, title: "Aptitude & Multitasking", dates: "Apr 28–May 4", subjects: ["Aptitude","Comms"],
+        topics: ["Logic drills", "Mental arithmetic under time pressure", "LiveATC listening", "Task-switching exercises"],
+        motivation: "You're training like you're already in an assessment room." }
+    ]
+  },
+  {
+    month: "May 2026", short: "MAY", title: "Aero, Weather & Navigation",
+    weeks: [
+      { num: 5, title: "Aerodynamics Deep Dive", dates: "May 5–11", subjects: ["Flight Theory","Math"],
+        topics: ["Bernoulli vs Newton", "Speed-distance-time", "Basic aviation calculations", "Lift and stall concepts"],
+        motivation: "You'll start thinking in aerodynamic cause and effect." },
+      { num: 6, title: "Weather Basics", dates: "May 12–18", subjects: ["Weather"],
+        topics: ["Atmosphere layers", "Pressure systems", "Cloud types", "Daily METAR reading"],
+        motivation: "Pilots who understand weather make calmer decisions." },
+      { num: 7, title: "Weather Advanced", dates: "May 19–25", subjects: ["Weather","Navigation"],
+        topics: ["Fronts", "Turbulence", "Jet streams", "TAF and METAR decoding practice"],
+        motivation: "You'll see weather as a system, not just a forecast." },
+      { num: 8, title: "General Navigation Basics", dates: "May 26–Jun 1", subjects: ["Navigation","Math"],
+        topics: ["Latitude/Longitude", "Great circle routes", "Zulu time", "Simple route plotting"],
+        motivation: "This is where your situational awareness starts getting sharp." }
+    ]
+  },
+  {
+    month: "June 2026", short: "JUN", title: "Nav, Law, Systems & Performance",
+    weeks: [
+      { num: 9, title: "Radio Nav Part 1", dates: "Jun 2–8", subjects: ["Navigation","Systems"],
+        topics: ["VOR basics", "ADF basics", "DME basics", "Track vs heading"],
+        motivation: "You'll navigate like a pilot, not just a passenger." },
+      { num: 10, title: "Radio Nav Part 2 + Flight Planning", dates: "Jun 9–15", subjects: ["Navigation","Performance"],
+        topics: ["GPS and ILS basics", "Simple flight planning", "Fuel and wind awareness", "Route reasoning"],
+        motivation: "You're learning the mindset behind real pre-flight planning." },
+      { num: 11, title: "Air Law & Comms 1", dates: "Jun 16–22", subjects: ["Air Law","Comms"],
+        topics: ["Airspace classes", "VFR minima", "ATC listening", "Clear readback habit"],
+        motivation: "Soon you'll sound more professional on the radio." },
+      { num: 12, title: "Air Law & Comms 2", dates: "Jun 23–29", subjects: ["Air Law","Comms"],
+        topics: ["IFR rules", "NOTAM basics", "ICAO phraseology", "Sample ATC calls"],
+        motivation: "Walk into OSM already familiar with aviation language." },
+      { num: 13, title: "Aircraft Systems 1", dates: "Jun 30–Jul 6", subjects: ["Systems"],
+        topics: ["Airframes", "Piston vs turbine", "Engine basics", "System purpose awareness"],
+        motivation: "You'll know what the machine is doing, not just what it looks like." }
+    ]
+  },
+  {
+    month: "July 2026", short: "JUL", title: "Final Review & OSM Ready",
+    weeks: [
+      { num: 14, title: "Aircraft Systems 2 + Performance", dates: "Jul 7–13", subjects: ["Systems","Performance"],
+        topics: ["Electrical systems", "Hydraulics", "Pressurization", "Weight & balance basics"],
+        motivation: "Good system awareness makes you look composed and trainable." },
+      { num: 15, title: "Human Performance + Ops", dates: "Jul 14–20", subjects: ["Human Factors","Ops"],
+        topics: ["Hypoxia", "Fatigue", "Stress", "CRM and decision making"],
+        motivation: "Professional pilots manage themselves as carefully as the aircraft." },
+      { num: 16, title: "Mock Exams & Weak Spots", dates: "Jul 21–27", subjects: ["Revision","Aptitude"],
+        topics: ["Timed mock questions", "Weak-area revision", "ATC listening", "Concept explanation practice"],
+        motivation: "This is where everything starts locking together." },
+      { num: 17, title: "Final Review & Capstone", dates: "Jul 28–31", subjects: ["Revision","Navigation","Performance"],
+        topics: ["Quick review of all core subjects", "Cross-country style scenario", "Rest and confidence building", "Calm pre-assessment prep"],
+        motivation: "Calm, sharp, ready — exactly how you want to show up." }
+    ]
+  }
+];
+
+const atcPhrases = [
+  { phrase: "GOLF-ALPHA-BRAVO, runway 27L, cleared for takeoff, wind 270 at 8 knots", meaning: "Takeoff clearance: callsign, runway, clearance, and current wind." },
+  { phrase: "OSCAR-SIERRA-MIKE, descend to flight level 120, QNH 1013", meaning: "Descend instruction with assigned flight level and pressure setting." },
+  { phrase: "LIMA-INDIA-MIKE, contact Oslo Approach on 119.7, good day", meaning: "Frequency handoff to the next controller." },
+  { phrase: "NOVEMBER-KILO-ROMEO, squawk 4521, ident", meaning: "Set the transponder code and press IDENT." },
+  { phrase: "PAPA-FOXTROT-JULIET, hold at ABVIK, expect further clearance at 14:30 Zulu", meaning: "Hold over the fix until later clearance." },
+  { phrase: "ZULU-KILO-FOXTROT, line up and wait, runway 08", meaning: "Taxi onto the runway and hold. Not cleared for takeoff yet." }
+];
+
+const icaoAlphabet = [
+  ['A','Alpha'],['B','Bravo'],['C','Charlie'],['D','Delta'],['E','Echo'],
+  ['F','Foxtrot'],['G','Golf'],['H','Hotel'],['I','India'],['J','Juliet'],
+  ['K','Kilo'],['L','Lima'],['M','Mike'],['N','November'],['O','Oscar'],
+  ['P','Papa'],['Q','Quebec'],['R','Romeo'],['S','Sierra'],['T','Tango'],
+  ['U','Uniform'],['V','Victor'],['W','Whiskey'],['X','X-ray'],['Y','Yankee'],['Z','Zulu']
+];
+
+const resourceLibrary = [
+  { title: "Khan Academy — Arithmetic & Algebra", type: "Math", level: "Free", desc: "Best for ratios, percentages, equations and mental speed refreshers.", link: "https://www.khanacademy.org/math" },
+  { title: "Pilotest", type: "Aptitude", level: "Free", desc: "Fast training for logic, multitasking and pilot-style entrance tests.", link: "https://www.pilotest.com" },
+  { title: "LiveATC", type: "Comms", level: "Free", desc: "Listen to real ATC and build phrase recognition and calm radio ears.", link: "https://www.liveatc.net" },
+  { title: "SkyVector", type: "Navigation", level: "Free", desc: "Plot simple routes and develop navigation awareness.", link: "https://skyvector.com" },
+  { title: "Captain Joe", type: "Systems", level: "Free", desc: "Useful for systems explanations, procedures and aviation theory.", link: "https://www.youtube.com/@flywithcaptainjoe" },
+  { title: "Mentour Pilot", type: "Ops", level: "Free", desc: "Great for CRM, decision making and airline-style thinking.", link: "https://www.youtube.com/@MentourPilot" }
+];
+
+const dailyMissionPool = [
+  { title: "ATC readback practice", desc: "Listen to 5 real ATC transmissions and repeat each one back clearly, matching the rhythm and structure.", tags: ["Comms", "Pilot-specific", "+20 XP"] },
+  { title: "Fuel and time mini-plan", desc: "Take a short route and estimate time, reserve fuel and one reason you might delay departure.", tags: ["Performance", "Ops", "+20 XP"] },
+  { title: "METAR command drill", desc: "Decode 2 METARs and decide which one looks safer for a student flight.", tags: ["Weather", "Decision-making", "+20 XP"] },
+  { title: "Instrument scan memory", desc: "Name the primary flight instruments from memory and explain what each helps you control.", tags: ["Systems", "Scan", "+20 XP"] },
+  { title: "Mental math under pressure", desc: "Do 10 percentage or speed-distance-time questions with a 60-second time cap per set.", tags: ["Math", "Aptitude", "+20 XP"] },
+  { title: "Air law flash drill", desc: "Review airspace classes or minima for 10 minutes and explain them back out loud in simple words.", tags: ["Air Law", "Recall", "+20 XP"] }
+];
+
+const aptitudeDrills = [
+  { value: "180 kt for 20 min", prompt: "How many nautical miles do you cover?", answer: "60 NM. Because 20 min is one-third of an hour, and 180 ÷ 3 = 60." },
+  { value: "Fuel = 96 L", prompt: "Trip uses 24 L/hr. Endurance?", answer: "4 hours." },
+  { value: "Heading 090°", prompt: "Turn right 135°. New heading?", answer: "225°." },
+  { value: "15% of 240", prompt: "Calculate quickly.", answer: "36." },
+  { value: "QNH 1013 → 1003", prompt: "Pressure drops 10 hPa. Altitude trend if not corrected?", answer: "Your altimeter will over-read; you are lower than indicated." },
+  { value: "ETA 14:40Z", prompt: "Delay 25 min. New ETA?", answer: "15:05Z." },
+  { value: "3 tasks", prompt: "Aviate, navigate, communicate — priority order?", answer: "Aviate first, navigate second, communicate third." },
+  { value: "120 NM", prompt: "Groundspeed 240 kt. Time en route?", answer: "30 minutes." }
+];
+
+const achievements = [
+  { id: "first_week", icon: "🚀", name: "Departure", desc: "Complete your first week.", test: () => doneCount() >= 1 },
+  { id: "five_weeks", icon: "📚", name: "Cadet Flow", desc: "Complete 5 weeks.", test: () => doneCount() >= 5 },
+  { id: "ten_weeks", icon: "🧭", name: "Navigator", desc: "Complete 10 weeks.", test: () => doneCount() >= 10 },
+  { id: "all_weeks", icon: "🏆", name: "OSM Ready", desc: "Complete all 17 weeks.", test: () => doneCount() >= totalWeeks() },
+  { id: "first_log", icon: "📒", name: "Logbook Open", desc: "Write your first study log.", test: () => state.logs.length >= 1 },
+  { id: "mission_3", icon: "🎯", name: "Mission Runner", desc: "Complete 3 daily missions.", test: () => state.missionsCompleted >= 3 },
+  { id: "level_4", icon: "🛡️", name: "Cadet Level IV", desc: "Reach level 4.", test: () => state.level >= 4 },
+  { id: "timer_5", icon: "⏱️", name: "Deep Focus", desc: "Finish 5 timer sessions.", test: () => state.timerSessions >= 5 }
+];
+
+const STORE_KEY = 'pilot_prep_elite_apr_jul_v1';
+
+let state = {
+  completed: {},
+  openPhases: { 0: true },
+  openWeeks: {},
+  phraseIdx: Math.floor(Math.random() * atcPhrases.length),
+  logs: [],
+  icaoIdx: 0,
+  xp: 0,
+  level: 1,
+  missionsCompleted: 0,
+  missionIdx: Math.floor(Math.random() * dailyMissionPool.length),
+  missionDoneToday: false,
+  missionDate: '',
+  unlocked: [],
+  timerSecondsLeft: 20 * 60,
+  timerRunning: false,
+  timerSessions: 0,
+  aptitudeIdx: Math.floor(Math.random() * aptitudeDrills.length)
+};
+
+let timerInterval = null;
+
+function flattenWeeks() {
+  return phases.flatMap(p => p.weeks);
+}
+function totalWeeks() {
+  return flattenWeeks().length;
+}
+function doneCount() {
+  return Object.values(state.completed).filter(Boolean).length;
+}
+function calcStreak() {
+  let streak = 0;
+  for (let i = 1; i <= totalWeeks(); i++) {
+    if (state.completed[i]) streak++;
+    else break;
+  }
+  return streak;
+}
+
+function xpNeededForLevel(level) {
+  // Balanced slower ramp
+  return 220 + (level - 1) * 140;
+}
+function totalXPToReach(level) {
+  let total = 0;
+  for (let i = 1; i < level; i++) total += xpNeededForLevel(i);
+  return total;
+}
+function currentDateKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    state = {
+      ...state,
+      ...saved,
+      completed: saved.completed || {},
+      openPhases: saved.openPhases || { 0: true },
+      openWeeks: saved.openWeeks || {},
+      logs: saved.logs || [],
+      unlocked: saved.unlocked || []
+    };
+  } catch (e) {
+    console.warn('Load failed', e);
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.warn('Save failed', e);
+  }
+}
+
+function syncMissionDate() {
+  const today = currentDateKey();
+  if (state.missionDate !== today) {
+    state.missionDate = today;
+    state.missionDoneToday = false;
+    state.missionIdx = Math.floor(Math.random() * dailyMissionPool.length);
+  }
+}
+
+function addXP(amount) {
+  state.xp += amount;
+  while (state.xp >= totalXPToReach(state.level + 1)) {
+    state.level++;
+  }
+}
+
+function updateAchievements() {
+  let changed = false;
+  achievements.forEach(a => {
+    if (!state.unlocked.includes(a.id) && a.test()) {
+      state.unlocked.push(a.id);
+      changed = true;
+    }
+  });
+  if (changed) saveState();
+}
+
+function subjectProgress() {
+  const map = {};
+  flattenWeeks().forEach(week => {
+    week.subjects.forEach(subject => {
+      if (!map[subject]) map[subject] = { total: 0, done: 0 };
+      map[subject].total++;
+      if (state.completed[week.num]) map[subject].done++;
+    });
+  });
+  return map;
+}
+
+function updateStats() {
+  const total = totalWeeks();
+  const done = doneCount();
+  const pct = Math.round(done / total * 100);
+  const streak = calcStreak();
+
+  document.getElementById('g-done').textContent = done;
+  document.getElementById('g-pct').textContent = pct + '%';
+  document.getElementById('g-left').textContent = total - done;
+  document.getElementById('g-streak').textContent = streak;
+  document.getElementById('g-level').textContent = state.level;
+  document.getElementById('g-xp').textContent = state.xp;
+
+  document.getElementById('hdr-done').textContent = done;
+  document.getElementById('hdr-total').textContent = total;
+  document.getElementById('hdr-pct').textContent = pct + '%';
+  document.getElementById('hdr-level').textContent = state.level;
+
+  document.getElementById('runway-fill').style.width = pct + '%';
+  document.getElementById('streak-display').textContent = streak;
+
+  const currentLevelStart = totalXPToReach(state.level);
+  const nextLevelStart = totalXPToReach(state.level + 1);
+  const levelSpan = nextLevelStart - currentLevelStart;
+  const levelInto = state.xp - currentLevelStart;
+  const levelPct = Math.max(0, Math.min(100, Math.round(levelInto / levelSpan * 100)));
+
+  document.getElementById('xp-level').textContent = 'LVL ' + state.level;
+  document.getElementById('xp-points').textContent = state.xp;
+  document.getElementById('xp-next').textContent = nextLevelStart;
+  document.getElementById('xp-fill').style.width = levelPct + '%';
+
+  const dotsEl = document.getElementById('streak-dots');
+  dotsEl.innerHTML = '';
+  for (let i = 1; i <= total; i++) {
+    const d = document.createElement('div');
+    d.className = 'streak-dot' + (state.completed[i] ? ' done' : '');
+    dotsEl.appendChild(d);
+  }
+
+  const current = flattenWeeks().find(w => !state.completed[w.num]);
+  const briefDate = document.getElementById('brief-date');
+  const briefPhase = document.getElementById('brief-phase');
+  const briefDesc = document.getElementById('brief-desc');
+
+  briefDate.textContent = 'TODAY — ' + new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }).toUpperCase();
+
+  if (current) {
+    briefPhase.textContent = `Week ${current.num}: ${current.title}`;
+    briefDesc.textContent = current.topics[0] + '. ' + (current.topics[1] || '') + ' ' + current.motivation;
+  } else {
+    briefPhase.textContent = 'All weeks complete!';
+    briefDesc.textContent = 'You completed the full April–July elite track. Keep reviewing weak spots and stay composed.';
+  }
+
+  renderSubjectBreakdown();
+  renderMission();
+  renderAchievements();
+  renderTimer();
+}
+
+function renderPhaseTabs() {
+  const el = document.getElementById('phase-tabs');
+  el.innerHTML = phases.map((p, i) => {
+    const done = p.weeks.filter(w => state.completed[w.num]).length;
+    return `<button class="phase-tab ${state.openPhases[i] ? 'active' : ''}" onclick="togglePhase(${i})">${p.short} — ${p.title} (${done}/${p.weeks.length})</button>`;
+  }).join('');
+}
+
+function renderPlan() {
+  renderPhaseTabs();
+  updateStats();
+  renderLog();
+  const grid = document.getElementById('plan-grid');
+  grid.innerHTML = '';
+
+  phases.forEach((phase, pi) => {
+    const isOpen = !!state.openPhases[pi];
+    const done = phase.weeks.filter(w => state.completed[w.num]).length;
+    const pct = Math.round(done / phase.weeks.length * 100);
+
+    const block = document.createElement('div');
+    block.className = 'phase-block' + (isOpen ? ' open' : '');
+    block.style.animationDelay = (pi * 0.04) + 's';
+
+    const weeksHtml = phase.weeks.map(w => {
+      const isDone = !!state.completed[w.num];
+      const isExp = !!state.openWeeks[w.num];
+      const expandHtml = isExp ? `
+        <div class="week-expand">
+          <div class="topic-list">${w.topics.map(t => `<span class="topic-chip">› ${t}</span>`).join('')}</div>
+          <div class="motivation-strip">"${w.motivation}"</div>
+        </div>` : '';
+
+      return `
+        <div class="week-row ${isExp ? 'expanded' : ''}" id="week-row-${w.num}" onclick="toggleWeek(${w.num})">
+          <div class="check-btn ${isDone ? 'done' : ''}" onclick="event.stopPropagation();toggleDone(${w.num})">${isDone ? '✓' : ''}</div>
+          <div class="week-num-badge">WK ${w.num}</div>
+          <div class="week-body">
+            <div class="week-title ${isDone ? 'done' : ''}">${w.title}</div>
+            <div class="week-dates">${w.dates}</div>
+            <div class="week-meta">${w.subjects.map(s => `<span class="meta-chip">${s}</span>`).join('')}</div>
+            ${expandHtml}
+          </div>
+          <div class="expand-arrow">${isExp ? '▲' : '▼'}</div>
+        </div>`;
+    }).join('');
+
+    block.innerHTML = `
+      <div class="phase-header" onclick="togglePhase(${pi})">
+        <div class="phase-badge">${phase.short}</div>
+        <div>
+          <div class="phase-title-text">${phase.month} — ${phase.title}</div>
+          <div class="phase-sub">${phase.weeks.length} week block</div>
+        </div>
+        <div class="phase-prog-wrap">
+          <div class="phase-prog-bar"><div class="phase-prog-fill" style="width:${pct}%"></div></div>
+          <span class="phase-prog-text">${done}/${phase.weeks.length}</span>
+        </div>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="weeks-list">${weeksHtml}</div>
+    `;
+    grid.appendChild(block);
+  });
+}
+
+function togglePhase(i) {
+  state.openPhases[i] = !state.openPhases[i];
+  saveState();
+  renderPlan();
+}
+function toggleWeek(num) {
+  state.openWeeks[num] = !state.openWeeks[num];
+  saveState();
+  renderPlan();
+}
+function toggleDone(num) {
+  const markDone = !state.completed[num];
+  state.completed[num] = markDone;
+  if (markDone) addXP(70);
+  saveState();
+  updateAchievements();
+  renderPlan();
+}
+function markCurrentDone() {
+  const current = flattenWeeks().find(w => !state.completed[w.num]);
+  if (!current) return;
+  state.completed[current.num] = true;
+  addXP(70);
+  saveState();
+  updateAchievements();
+  renderPlan();
+}
+function openCurrentWeek() {
+  const current = flattenWeeks().find(w => !state.completed[w.num]);
+  if (!current) return;
+  state.openWeeks[current.num] = true;
+  phases.forEach((p, i) => {
+    if (p.weeks.some(x => x.num === current.num)) state.openPhases[i] = true;
+  });
+  saveState();
+  renderPlan();
+  setTimeout(() => {
+    const el = document.getElementById('week-row-' + current.num);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+function resetProgress() {
+  if (!confirm('Reset all progression, XP, missions, logs, achievements and timer stats?')) return;
+  localStorage.removeItem(STORE_KEY);
+  location.reload();
+}
+
+function loadPhrase() {
+  const p = atcPhrases[state.phraseIdx];
+  document.getElementById('atc-phrase').textContent = p.phrase;
+  document.getElementById('atc-meaning').textContent = p.meaning;
+}
+function nextPhrase() {
+  state.phraseIdx = (state.phraseIdx + 1) % atcPhrases.length;
+  saveState();
+  loadPhrase();
+}
+
+function addLog() {
+  const input = document.getElementById('log-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const now = new Date();
+  state.logs.unshift({
+    text,
+    time: now.toLocaleString('en-GB', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })
+  });
+  if (state.logs.length > 25) state.logs.pop();
+  input.value = '';
+  saveState();
+  updateAchievements();
+  renderLog();
+}
+function deleteLog(i) {
+  state.logs.splice(i, 1);
+  saveState();
+  renderLog();
+}
+function renderLog() {
+  const el = document.getElementById('log-entries');
+  if (!el) return;
+  if (state.logs.length === 0) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:4px 0;">No entries yet — log your first study session.</div>';
+    return;
+  }
+  el.innerHTML = state.logs.map((l, i) => `
+    <div class="log-entry">
+      <span class="log-entry-time">${l.time}</span>
+      <span style="flex:1;font-size:13px;color:var(--text2);">${l.text}</span>
+      <span class="log-del" onclick="deleteLog(${i})">✕</span>
+    </div>
+  `).join('');
+}
+
+function renderIcaoGrid() {
+  document.getElementById('icao-grid').innerHTML = icaoAlphabet.map(([l, w]) => `
+    <div class="alpha-cell">
+      <span class="alpha-letter">${l}</span>
+      <span class="alpha-word">${w}</span>
+    </div>
+  `).join('');
+}
+function nextIcao() {
+  state.icaoIdx = Math.floor(Math.random() * icaoAlphabet.length);
+  document.getElementById('icao-quiz').textContent = icaoAlphabet[state.icaoIdx][0];
+  document.getElementById('icao-answer').textContent = '';
+}
+function revealIcao() {
+  document.getElementById('icao-answer').textContent = icaoAlphabet[state.icaoIdx][1];
+}
+
+function renderSubjectBreakdown() {
+  const data = subjectProgress();
+  const el = document.getElementById('subject-breakdown');
+  const subjects = Object.keys(data).sort((a, b) => {
+    const pa = data[a].done / data[a].total;
+    const pb = data[b].done / data[b].total;
+    return pb - pa;
+  });
+
+  el.innerHTML = subjects.map(name => {
+    const item = data[name];
+    const pct = Math.round(item.done / item.total * 100);
+    return `
+      <div class="subject-row">
+        <div class="subject-top">
+          <span>${name}</span>
+          <span>${item.done}/${item.total} · ${pct}%</span>
+        </div>
+        <div class="subject-bar"><div class="subject-fill" style="width:${pct}%"></div></div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderMission() {
+  syncMissionDate();
+  const mission = dailyMissionPool[state.missionIdx];
+  document.getElementById('mission-date').textContent = 'MISSION DATE — ' + state.missionDate;
+  document.getElementById('mission-title').textContent = mission.title + (state.missionDoneToday ? ' ✓' : '');
+  document.getElementById('mission-desc').textContent = mission.desc;
+  document.getElementById('mission-tags').innerHTML = mission.tags.map(t => `<span class="mission-tag">${t}</span>`).join('');
+}
+function completeMission() {
+  syncMissionDate();
+  if (state.missionDoneToday) {
+    alert("Today's mission is already completed.");
+    return;
+  }
+  state.missionDoneToday = true;
+  state.missionsCompleted++;
+  addXP(20);
+  saveState();
+  updateAchievements();
+  renderPlan();
+}
+function nextMission() {
+  state.missionIdx = (state.missionIdx + 1) % dailyMissionPool.length;
+  saveState();
+  renderMission();
+}
+
+function renderAchievements() {
+  const el = document.getElementById('achievement-list');
+  el.innerHTML = achievements.map(a => {
+    const unlocked = state.unlocked.includes(a.id);
+    return `
+      <div class="achievement-item ${unlocked ? 'unlocked' : ''}">
+        <div class="achievement-icon">${a.icon}</div>
+        <div>
+          <div class="achievement-name">${a.name}${unlocked ? ' ✓' : ''}</div>
+          <div class="achievement-desc">${a.desc}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function nextAptitude() {
+  state.aptitudeIdx = Math.floor(Math.random() * aptitudeDrills.length);
+  const drill = aptitudeDrills[state.aptitudeIdx];
+  document.getElementById('aptitude-value').textContent = drill.value;
+  document.getElementById('aptitude-prompt').textContent = drill.prompt;
+  document.getElementById('aptitude-answer').textContent = 'Think first. Reveal when ready.';
+  saveState();
+}
+function revealAptitude() {
+  const drill = aptitudeDrills[state.aptitudeIdx];
+  document.getElementById('aptitude-answer').textContent = drill.answer;
+}
+
+function formatTimer() {
+  const m = String(Math.floor(state.timerSecondsLeft / 60)).padStart(2, '0');
+  const s = String(state.timerSecondsLeft % 60).padStart(2, '0');
+  return `${m}:${s}`;
+}
+function renderTimer() {
+  document.getElementById('timer-display').textContent = formatTimer();
+}
+function startTimer() {
+  if (timerInterval) return;
+  state.timerRunning = true;
+  timerInterval = setInterval(() => {
+    if (state.timerSecondsLeft > 0) {
+      state.timerSecondsLeft--;
+      renderTimer();
+      saveState();
+    } else {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      state.timerRunning = false;
+      state.timerSessions++;
+      addXP(15);
+      saveState();
+      updateAchievements();
+      renderPlan();
+      alert('Focus session complete. +15 XP');
+    }
+  }, 1000);
+}
+function pauseTimer() {
+  state.timerRunning = false;
+  clearInterval(timerInterval);
+  timerInterval = null;
+  saveState();
+}
+function resetTimer() {
+  pauseTimer();
+  state.timerSecondsLeft = 20 * 60;
+  saveState();
+  renderTimer();
+}
+
+function showSection(name) {
+  ['plan', 'icao', 'resources'].forEach(s => {
+    const el = document.getElementById('section-' + s);
+    if (el) el.style.display = (s === name) ? (s === 'plan' ? 'grid' : 'block') : 'none';
+  });
+  document.querySelectorAll('.nav-tab').forEach((tab, i) => {
+    tab.classList.toggle('active', ['plan', 'icao', 'resources'][i] === name);
+  });
+  if (name === 'icao') {
+    renderIcaoGrid();
+    nextIcao();
+  }
+}
+function openLink(url) {
+  window.open(url, '_blank');
+}
+function renderResourceLibrary() {
+  const el = document.getElementById('resource-library');
+  el.innerHTML = resourceLibrary.map(r => `
+    <div class="resource-card">
+      <div class="resource-card-top">
+        <h3>${r.title}</h3>
+        <div class="resource-card-meta">${r.level}</div>
+      </div>
+      <p>${r.desc}</p>
+      <div class="resource-card-top" style="margin-bottom:0;">
+        <div class="resource-card-meta">${r.type}</div>
+        <button class="btn-ghost" onclick="openLink('${r.link}')">Open</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+loadState();
+syncMissionDate();
+updateAchievements();
+renderPlan();
+loadPhrase();
+renderLog();
+renderResourceLibrary();
+renderTimer();
+nextAptitude();
+
+if (state.timerRunning && state.timerSecondsLeft > 0) {
+  startTimer();
+}
+</script>
+</body>
+</html>
+'''
